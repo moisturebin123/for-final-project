@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>펜타프리즘 루나 채팅 시뮬레이터</title>
+    <!-- Tailwind CSS (디자인) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- React 및 Babel (JSX 코드 실행) -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* 커스텀 CSS 및 애니메이션 */
+        .glass-bubble-idol {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { 
+          background-color: rgba(255, 255, 255, 0.2);
+          border-radius: 20px;
+        }
+        @keyframes float-slow {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, 30px); }
+        }
+        @keyframes float-delayed {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+        @keyframes slide-in-left {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slide-in-right {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-float-slow { animation: float-slow 8s infinite ease-in-out; }
+        .animate-float-delayed { animation: float-delayed 10s infinite ease-in-out reverse; }
+        .animate-slide-in-left { animation: slide-in-left 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .animate-slide-in-right { animation: slide-in-right 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    </style>
+</head>
+<body class="bg-black">
+
+    <div id="root" class="flex justify-center items-center min-h-screen w-full font-sans p-4 overflow-hidden relative"></div>
+
+    <script type="text/babel">
+        // Lucide-React 아이콘들을 인라인 SVG로 정의합니다.
+        const Send = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>;
+        const ChevronLeft = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m15 18-6-6 6-6"/></svg>;
+        const MoreVertical = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>;
+        const ImageIcon = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L6 21"/></svg>;
+        const Bell = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M10 5a2 2 0 0 1 4 0"/><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>;
+        const Music = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9.5 17c.92-.81 2.37-1.29 4.13-1.29 3.99 0 7.42-3.4 7.42-7.41 0-2.42-1.12-4.57-2.88-6.19"/><path d="M22 17s-2.16-3.72-4.49-6.3c-.63-.73-1.01-1.23-1.01-1.23"/><path d="M12 21.5V6"/><path d="M16 8V6"/></svg>;
+        const Camera = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14.5 4h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1"/><circle cx="12" cy="13" r="3"/><path d="M17.5 7h.01"/></svg>;
+        const RefreshCw = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9 9 0 0 0-6.22 15.68"/><path d="M2.5 9h3.69a1 1 0 0 1 .93.68l.84 2.81a1 1 0 0 0 .93.68H12"/><path d="M16.24 7.24 12 11.48"/></svg>;
+
+
+        const { useState, useEffect, useRef } = React;
+
+        // --- 설정 ---
+        const GROUP_NAME = "펜타프리즘";
+        const IDOL_NAME = "루나 (Luna)";
+        const USER_NICKNAME = "프리즘"; 
+        const apiKey = "AIzaSyBz90soo7QnjDD3vuGTLxaYZaH-S2c3W_M"; // ⬅️ 여기에 API 키를 넣으세요!
+
+        // [기본 이미지] 로컬 파일이 없을 때 보여줄 인터넷 이미지 (엑박 방지)
+        const DEFAULT_PROFILE = "https://i.postimg.cc/NMmxbkg2/Gemini-Generated-Image-u77vfsu77vfsu77v.png"; // ⬅️ 루나 프로필 사진 URL로 변경
+        const DEFAULT_BG = "https://i.postimg.cc/D0cP3f4f/jjoggonunnaya-07400-pink-fantasy-cosmic-city-ar-43-v-7-54073724-fcf7-4d50-a586-b6117dcd81a7-2.png"; // ⬅️ 배경화면 URL로 변경
+
+        function App() {
+          // --- 상태 관리 ---
+          const [messages, setMessages] = useState([
+            { id: 1, text: `안녕 ${USER_NICKNAME}! ✨\n오늘 펜타프리즘 연습하다가 네 생각나서 왔어 🌙`, sender: 'idol', time: '오전 10:00', read: true },
+          ]);
+          const [inputText, setInputText] = useState("");
+          const [isTyping, setIsTyping] = useState(false);
+          
+          const [profileImg, setProfileImg] = useState(DEFAULT_PROFILE);
+          const [bgImg, setBgImg] = useState(DEFAULT_BG);
+          const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+          const messagesEndRef = useRef(null);
+          const profileInputRef = useRef(null);
+          const bgInputRef = useRef(null);
+
+          const scrollToBottom = () => {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+          };
+
+          useEffect(() => {
+            scrollToBottom();
+          }, [messages, isTyping]);
+
+          // --- 파일 업로드 핸들러 (실행 환경에서 이미지 변경 가능) ---
+          const handleImageUpload = (e, type) => {
+            const file = e.target.files[0];
+            if (file) {
+              const imageUrl = URL.createObjectURL(file);
+              if (type === 'profile') {
+                setProfileImg(imageUrl);
+              } else {
+                setBgImg(imageUrl);
+              }
+              setIsMenuOpen(false); 
+            }
+          };
+
+          // --- Gemini API 핸들러 ---
+          const fetchIdolResponse = async (userText) => {
+            if (apiKey === "YOUR_GEMINI_API_KEY_HERE" || apiKey === "") {
+                return "API 키를 설정하면 루나가 더 재미있는 대화를 해줄 수 있어! 🥺";
+            }
+            
+            // 💡 AI 페르소나 (System Prompt) 수정: 이해력과 자연스러운 대화에 집중
+            const systemPrompt = `
+              당신은 걸그룹 '${GROUP_NAME}'의 멤버 '루나(Luna)'입니다.
+              대화 상대는 당신의 팬인 '${USER_NICKNAME}'입니다. 당신의 목표는 팬의 말을 깊이 있게 이해하고, 진심으로 소통하며, 자연스럽고 친절하게 대화하는 것입니다.
+
+              [루나의 페르소나 가이드]
+              1. **대화 스타일**: 팬의 말에 논리적이고 정확하게 반응하여 대화의 맥락을 놓치지 마세요.
+              2. **말투**: 다정하고 친근한 반말(예: ~했어? ~지!)을 사용합니다. 과도한 이모티콘 사용은 피하고, 상황에 맞는 이모지(✨, 🌙, 💜 등)를 간결하게 사용합니다.
+              3. **상황**: 컴백 준비나 연습생 생활 등 아이돌의 일상에 대한 이야기를 자연스럽게 섞어주세요.
+              4. **답변 길이**: 1~3문장 정도의 간결한 답변을 유지합니다.
+            `;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+              contents: [{ parts: [{ text: userText }] }],
+              systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            const delays = [1000, 2000, 4000];
+            for (let i = 0; i <= delays.length; i++) {
+              try {
+                const response = await fetch(url, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || "와이파이가 좀 느리네.. 다시 말해줄래? 🥺";
+              } catch (error) {
+                if (i === delays.length) return "지금 잠깐 신호가 안 좋아! 이따 다시 올게 🌙";
+                await new Promise(resolve => setTimeout(resolve, delays[i]));
+              }
+            }
+          };
+
+          const handleSendMessage = async (e) => {
+            e.preventDefault();
+            if (!inputText.trim()) return;
+
+            // API 키가 비어있을 경우 경고 메시지 대신 루나의 응답으로 처리
+            if (apiKey === "YOUR_GEMINI_API_KEY_HERE" || apiKey === "") {
+              const defaultReply = "음... 지금 회사에서 와이파이를 잠시 꺼 뒀나 봐. 🥺 나중에 다시 시도해 줄래?";
+              
+              const now = new Date();
+              const timeString = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+              const newUserMsg = { id: Date.now(), text: inputText, sender: 'user', time: timeString, read: true };
+              setMessages((prev) => [...prev, newUserMsg]);
+              setInputText("");
+
+              setIsTyping(true);
+              await new Promise(resolve => setTimeout(resolve, 1500));
+              
+              const replyMsg = {
+                  id: Date.now() + 1,
+                  text: defaultReply,
+                  sender: 'idol',
+                  time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+                  read: true
+              };
+              setMessages((prev) => [...prev, replyMsg]);
+              setIsTyping(false);
+              return;
+            }
+
+
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' });
+
+            const newUserMsg = {
+              id: Date.now(),
+              text: inputText,
+              sender: 'user',
+              time: timeString,
+              read: true
+            };
+
+            setMessages((prev) => [...prev, newUserMsg]);
+            const currentInput = inputText;
+            setInputText("");
+
+            setIsTyping(true);
+
+            const minDelayPromise = new Promise(resolve => setTimeout(resolve, 1500));
+            const apiPromise = fetchIdolResponse(currentInput);
+
+            const [_, replyText] = await Promise.all([minDelayPromise, apiPromise]);
+
+            const replyMsg = {
+              id: Date.now() + 1,
+              text: replyText,
+              sender: 'idol',
+              time: new Date().toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' }),
+              read: true
+            };
+              
+            setMessages((prev) => [...prev, replyMsg]);
+            setIsTyping(false);
+          };
+
+          const formatDate = () => {
+            const date = new Date();
+            return `${date.getMonth() + 1}월 ${date.getDate()}일`;
+          };
+
+          return (
+            <div className="relative w-auto h-[85vh] aspect-[9/16] bg-[#0f0c29] shadow-[0_0_50px_rgba(236,72,153,0.6)] rounded-[2.5rem] overflow-hidden flex flex-col border-[6px] border-[#2a2a4a] ring-2 ring-pink-500/50 z-10">
+              
+              {/* 파일 입력창 (숨김) */}
+              <input 
+                type="file" 
+                ref={profileInputRef} 
+                className="hidden" 
+                accept="image/*" 
+                onChange={(e) => handleImageUpload(e, 'profile')} 
+              />
+              <input 
+                type="file" 
+                ref={bgInputRef} 
+                className="hidden" 
+                accept="image/*" 
+                onChange={(e) => handleImageUpload(e, 'bg')} 
+              />
+
+              {/* 배경 이미지 및 애니메이션 효과 */}
+              <div className="absolute inset-0 z-0 transition-all duration-500">
+                  <img 
+                      src={bgImg}
+                      alt="Chat Background" 
+                      className="w-full h-full object-cover opacity-50" 
+                  />
+                  <div className="absolute inset-0 bg-[#0f0c29]/40 backdrop-blur-[1px]"></div>
+              </div>
+              <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+                  <div className="absolute top-[-20%] left-[-20%] w-[80%] h-[50%] bg-purple-600/20 rounded-full blur-[80px] animate-float-slow"></div>
+                  <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[60%] bg-pink-600/10 rounded-full blur-[80px] animate-float-delayed"></div>
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+              </div>
+
+              {/* 1. 상단 헤더 */}
+              <div className="bg-[#1a1a2e]/60 backdrop-blur-xl p-4 flex items-center justify-between sticky top-0 z-30 border-b border-white/10">
+                <div className="flex items-center space-x-3">
+                  <ChevronLeft className="w-6 h-6 text-white/80 cursor-pointer hover:text-pink-300 transition-colors" />
+                  <div className="flex flex-col">
+                      <h1 className="text-base font-bold text-white flex items-center gap-1">
+                          {IDOL_NAME}
+                          <div className="w-1.5 h-1.5 bg-[#00ff00] rounded-full animate-pulse shadow-[0_0_8px_#00ff00]"></div>
+                      </h1>
+                      <span className="text-[10px] text-pink-300/80 font-medium tracking-wider flex items-center gap-1">
+                          <Music className="w-2.5 h-2.5" /> {GROUP_NAME}
+                      </span>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3 relative">
+                  <Bell className="w-5 h-5 text-white/70 hover:text-pink-400 transition-colors" />
+                  
+                  {/* [기능 추가] 설정 메뉴 버튼 */}
+                  <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="focus:outline-none">
+                    <MoreVertical className="w-5 h-5 text-white/70 hover:text-pink-400 transition-colors" />
+                  </button>
+
+                  {/* 설정 드롭다운 메뉴 */}
+                  {isMenuOpen && (
+                    <div className="absolute top-8 right-0 w-40 bg-[#1a1a2e] border border-pink-500/30 rounded-xl shadow-2xl overflow-hidden z-50 backdrop-blur-md">
+                      <button 
+                        onClick={() => profileInputRef.current.click()}
+                        className="w-full px-4 py-3 text-left text-xs text-white hover:bg-pink-500/20 flex items-center gap-2 transition-colors border-b border-white/5"
+                      >
+                        <Camera className="w-3.5 h-3.5 text-pink-400" />
+                        프로필 변경
+                      </button>
+                      <button 
+                        onClick={() => bgInputRef.current.click()}
+                        className="w-full px-4 py-3 text-left text-xs text-white hover:bg-pink-500/20 flex items-center gap-2 transition-colors"
+                      >
+                        <RefreshCw className="w-3.5 h-3.5 text-purple-400" />
+                        배경화면 변경
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 2. 채팅 영역 */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-5 custom-scrollbar relative z-10" onClick={() => setIsMenuOpen(false)}>
+                <div className="flex justify-center my-2">
+                  <span className="bg-black/30 backdrop-blur-sm border border-white/10 text-white/60 text-[10px] px-3 py-1 rounded-full shadow-lg">
+                    {formatDate()}
+                  </span>
+                </div>
+
+                {messages.map((msg) => (
+                  <div 
+                    key={msg.id} 
+                    className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
+                    {msg.sender === 'idol' && (
+                      <div className="flex max-w-[85%] items-start space-x-2 animate-slide-in-left">
+                        <div className="relative group cursor-pointer" onClick={() => profileInputRef.current.click()} title="클릭해서 프로필 변경">
+                          {/* 프로필 이미지 */}
+                          <img 
+                            src={profileImg}
+                            alt="profile" 
+                            className="w-9 h-9 rounded-full border border-white/20 object-cover shadow-[0_0_15px_rgba(192,132,252,0.4)] group-hover:border-pink-500 transition-colors"
+                          />
+                          <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-black rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col space-y-1">
+                          <span className="text-[10px] text-pink-200/70 ml-1">{IDOL_NAME}</span>
+                          <div className="flex items-end space-x-1">
+                            <div className="glass-bubble-idol px-3.5 py-2 rounded-2xl rounded-tl-none text-white/90 text-sm leading-relaxed shadow-lg break-words whitespace-pre-wrap">
+                              {msg.text}
+                            </div>
+                            <span className="text-[9px] text-white/30 min-w-[35px] mb-1">
+                              {msg.time}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {msg.sender === 'user' && (
+                      <div className="flex max-w-[85%] items-end justify-end space-x-1 animate-slide-in-right">
+                        <div className="flex flex-col items-end">
+                          {!msg.read && <span className="text-[9px] text-yellow-400 font-bold mb-0.5 drop-shadow-[0_0_5px_rgba(250,204,21,0.5)]">1</span>}
+                          <span className="text-[9px] text-white/30 mb-1">{msg.time}</span>
+                        </div>
+                        <div className="bg-gradient-to-br from-pink-600 to-purple-700 border border-white/10 px-3.5 py-2 rounded-2xl rounded-tr-none text-white text-sm leading-relaxed shadow-[0_4px_15px_rgba(236,72,153,0.3)] font-medium break-words">
+                          {msg.text}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {isTyping && (
+                  <div className="flex justify-start w-full animate-pulse">
+                    <div className="flex items-start space-x-2">
+                        <img 
+                          src={profileImg}
+                          alt="profile" 
+                          className="w-9 h-9 rounded-full border border-white/20 object-cover opacity-80"
+                        />
+                        <div className="glass-bubble-idol px-4 py-3 rounded-2xl rounded-tl-none flex space-x-1.5 items-center h-9">
+                          <div className="w-1.5 h-1.5 bg-pink-300 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                          <div className="w-1.5 h-1.5 bg-purple-300 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                          <div className="w-1.5 h-1.5 bg-indigo-300 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                        </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div ref={messagesEndRef} />
+              </div>
+
+              {/* 3. 입력창 영역 */}
+              <div className="bg-[#1a1a2e]/80 backdrop-blur-xl p-3 pb-5 sticky bottom-0 w-full border-t border-white/5 z-20">
+                <form onSubmit={handleSendMessage} className="flex items-center space-x-2 bg-black/40 px-1.5 py-1.5 rounded-full border border-white/10 focus-within:border-pink-500/50 focus-within:shadow-[0_0_20px_rgba(236,72,153,0.2)] transition-all duration-300">
+                  <button type="button" onClick={() => bgInputRef.current.click()} className="p-2 rounded-full hover:bg-white/5 text-white/50 hover:text-pink-400 transition-colors" title="배경 변경">
+                    <ImageIcon className="w-5 h-5" />
+                  </button>
+                  <input
+                    type="text"
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    placeholder="루나에게 답장하기..."
+                    className="flex-1 bg-transparent border-none outline-none text-sm text-white placeholder-white/30 min-w-0"
+                  />
+                  <button 
+                    type="submit" 
+                    disabled={!inputText.trim() || isTyping}
+                    className={`p-2 rounded-full transition-all duration-300 flex items-center justify-center ${inputText.trim() && !isTyping ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_10px_rgba(236,72,153,0.5)] transform hover:scale-105' : 'bg-white/10 text-white/20'}`}
+                  >
+                    <Send className="w-4 h-4 relative left-[1px]" />
+                  </button>
+                </form>
+              </div>
+
+            </div>
+          );
+        }
+        
+        // React 컴포넌트 렌더링
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    <script>
+        // API 키가 비어있을 때 알림
+        if ("YOUR_GEMINI_API_KEY_HERE" === "") {
+            // 이 경고는 API 키를 넣은 후에는 무시됩니다.
+            console.warn("경고: API 키가 설정되지 않아 AI 대화가 작동하지 않습니다. 코드의 apiKey 변수를 설정해주세요.");
+        }
+    </script>
+</body>
+</html>
