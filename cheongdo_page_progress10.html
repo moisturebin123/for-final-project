@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>청도군 로컬 비즈니스 혁신 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Pretendard', sans-serif; word-break: keep-all; background-color: #f9fafb;}
+        html { scroll-padding-top: 5rem; }
+        .text-cheongdo-red { color: #dc2626; }
+        .bg-cheongdo-red { background-color: #dc2626; }
+        .hero-pattern {
+            background-image: linear-gradient(to right bottom, rgba(185, 28, 28, 0.95), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1590252971277-2bbbdcf1f753?auto=format&fit=crop&w=2000&q=80');
+            background-size: cover; background-position: center;
+        }
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 상세 기사 디자인 보강 */
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.9; color: #374151; font-size: 1.1rem; }
+        .article-content h3 { font-size: 1.7rem; font-weight: 800; margin-top: 3.5rem; margin-bottom: 1.2rem; color: #111827; border-bottom: 3px solid #fee2e2; padding-bottom: 0.5rem; display: inline-block;}
+        .article-content h4 { font-size: 1.3rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.8rem; color: #dc2626; }
+        .article-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 2rem; }
+        .article-content li { margin-bottom: 0.8rem; line-height: 1.7; color: #4b5563; }
+        .article-content blockquote { border-left: 5px solid #dc2626; padding: 1.5rem 2rem; margin: 2.5rem 0; background: #fff1f2; border-radius: 0.8rem; font-weight: 600; color: #991b1b; line-height: 1.8;}
+        
+        .sidebar-link.active { background-color: #fee2e2; color: #dc2626; font-weight: 700; border-left: 4px solid #dc2626; }
+        .step-card { transition: all 0.3s ease; border: 1px solid #f3f4f6; cursor: pointer; }
+        .step-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); border-color: #fca5a5; }
+    </style>
+</head>
+<body class="text-gray-900">
+
+    <nav class="fixed w-full bg-white/95 backdrop-blur-md shadow-sm z-40 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+            <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="goHome()">
+                <span class="font-extrabold text-2xl md:text-3xl tracking-tighter text-cheongdo-red flex items-center">
+                    <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    청도 로컬혁신
+                </span>
+            </div>
+            <div class="hidden md:flex space-x-10 text-base font-bold text-gray-600">
+                <a href="#status" onclick="goHome()" class="hover:text-red-600 transition">위기와 대응</a>
+                <a href="#branding" onclick="goHome()" class="hover:text-red-600 transition">도시 브랜딩</a>
+                <a href="#innovation" onclick="goHome()" class="hover:text-red-600 transition">혁신센터 모델</a>
+                <a href="#dt-process" onclick="goHome()" class="hover:text-red-600 transition">디자인 씽킹 실전</a>
+            </div>
+        </div>
+    </nav>
+
+    <div id="home-view" class="fade-in">
+        <section class="hero-pattern min-h-[95vh] flex flex-col justify-center items-center text-white px-4 pt-20">
+            <div class="text-center max-w-5xl mx-auto">
+                <span class="inline-block py-2 px-6 rounded-full bg-black/50 border border-white/20 text-sm font-bold tracking-widest mb-8 backdrop-blur-md">청도군 지역 소멸 위기 극복 실전 프로젝트</span>
+                <h1 class="text-6xl md:text-8xl font-black mb-10 tracking-tighter leading-tight">맛도 쉼도 <span class="text-red-400">청도</span></h1>
+                <p class="text-2xl md:text-3xl font-light mb-14 leading-relaxed opacity-95">
+                    주민의 삶에 대한 <strong>공감</strong>과 엑셀 데이터 기반의 <strong>그로스 디자인</strong>이 만나<br>
+                    지속 가능한 로컬 비즈니스 생태계를 구축합니다.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <button onclick="document.getElementById('dt-process').scrollIntoView({behavior: 'smooth'})" class="py-5 px-10 bg-white text-red-900 font-black rounded-full shadow-2xl hover:bg-gray-100 transition transform hover:scale-105 text-lg">혁신 여정 시작하기 &rarr;</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="status" class="py-32 px-4 max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-sm font-black text-cheongdo-red tracking-widest uppercase mb-4">01. Current Crisis</h2>
+                    <h3 class="text-5xl font-black text-gray-900 mb-8 leading-tight">인구 구조의 붕괴,<br>그리고 선제적 대응</h3>
+                    <p class="text-xl text-gray-600 leading-relaxed mb-10">청도군은 고령 인구 비율 45.3%라는 소멸 고위험군입니다. 하지만 우리는 절망 대신 <strong>'생활 인구 34만 명'</strong>이라는 새로운 지표를 통해 반전을 만들어내고 있습니다.</p>
+                    <button onclick="openArticle('status')" class="px-8 py-4 border-2 border-red-600 text-red-600 font-black rounded-xl hover:bg-red-600 hover:text-white transition">분석 리포트 전체 읽기</button>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
+                        <div class="text-4xl font-black text-red-600 mb-2">160억</div>
+                        <p class="text-gray-500 font-bold">2025 지방소멸대응기금</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
+                        <div class="text-4xl font-black text-red-600 mb-2">7.8배</div>
+                        <p class="text-gray-500 font-bold">주민 대비 생활 인구 비율</p>
+                    </div>
+                    <div class="col-span-2 bg-red-600 p-8 rounded-3xl shadow-xl text-white">
+                        <div class="text-xl font-bold mb-2">경북 도내 생활 인구 증가율 1위</div>
+                        <p class="opacity-80">체류형 관광을 통한 관계 인구의 비약적 확대</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="branding" class="py-32 bg-gray-50 px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20">
+                    <h2 class="text-sm font-black text-cheongdo-red tracking-widest uppercase mb-4">02. City Branding</h2>
+                    <h3 class="text-5xl font-black text-gray-900">시각적 정체성과 압도적 인프라</h3>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-10">
+                    <div class="relative group overflow-hidden rounded-3xl shadow-2xl">
+                        <img src="https://images.unsplash.com/photo-1596438611196-84381040333d?auto=format&fit=crop&w=1200&q=80" class="w-full h-[500px] object-cover transition duration-500 group-hover:scale-110" alt="청도 전경">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-10">
+                            <h4 class="text-white text-3xl font-black mb-4">맛도 쉼도 청도</h4>
+                            <p class="text-gray-300 text-lg">청도읍성 성벽 폰트와 청도반시 감꽃 디자인의 융합</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-8">
+                        <div class="bg-white p-8 rounded-3xl shadow-lg">
+                            <h5 class="text-2xl font-bold mb-4">3,500억 청도자연드림파크</h5>
+                            <p class="text-gray-600 leading-relaxed">단순한 산업 단지를 넘어 병원, 호텔, 영화관이 집적된 최고 수준의 생활 인프라를 구축합니다.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-3xl shadow-lg border-l-8 border-red-600">
+                            <h5 class="text-2xl font-bold mb-4">409억 지역활력타운 '청려도원'</h5>
+                            <p class="text-gray-600 leading-relaxed">청년과 귀농인을 위한 창업 지원 센터와 주거 단지를 통해 안정적인 정착 모델을 제시합니다.</p>
+                        </div>
+                        <button onclick="openArticle('branding')" class="text-red-600 font-black text-xl hover:underline">영국 게이츠헤드 성공 모델과의 비교 분석 &rarr;</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="innovation" class="py-32 px-4 max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <h2 class="text-sm font-black text-cheongdo-red tracking-widest uppercase mb-4">03. Innovation Hub</h2>
+                <h3 class="text-5xl font-black text-gray-900">청도혁신센터와 로컬 비즈니스</h3>
+                <p class="text-xl text-gray-500 mt-6 font-medium">우장한 센터장이 이끄는 '주민 주도적' 혁신 생태계</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-10 bg-white rounded-3xl shadow-xl border border-gray-100 hover:border-red-200 transition">
+                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6 font-black text-2xl">01</div>
+                    <h5 class="text-2xl font-bold mb-4">비영리 스타트업</h5>
+                    <p class="text-gray-500 leading-relaxed">지역 사회의 근본적인 문제 해결과 사회적 가치 창출에 집중하는 실험적 모델</p>
+                </div>
+                <div class="p-10 bg-white rounded-3xl shadow-xl border border-gray-100 hover:border-red-200 transition">
+                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6 font-black text-2xl">02</div>
+                    <h5 class="text-2xl font-bold mb-4">사회적 경제 기업</h5>
+                    <p class="text-gray-500 leading-relaxed">협동조합 및 마을기업을 통해 지역 내 자본이 선순환되는 경제 구조 구축</p>
+                </div>
+                <div class="p-10 bg-white rounded-3xl shadow-xl border border-gray-100 hover:border-red-200 transition">
+                    <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6 font-black text-2xl">03</div>
+                    <h5 class="text-2xl font-bold mb-4">소셜 벤처</h5>
+                    <p class="text-gray-500 leading-relaxed">벤처 자본 유치와 혁신 기술을 통해 지역 기반 스케일업(Scale-up)을 추구하는 영리 모델</p>
+                </div>
+            </div>
+            <div class="mt-16 bg-gray-900 rounded-[3rem] p-12 text-white flex flex-col md:flex-row items-center justify-between shadow-2xl">
+                <div>
+                    <h5 class="text-3xl font-black mb-4">실제 프로젝트: 마을호텔 & 청년마을</h5>
+                    <p class="text-gray-400 text-lg">정체성과 수익성의 균형을 찾는 청도혁신센터의 핵심 전략</p>
+                </div>
+                <button onclick="openArticle('innovation')" class="mt-8 md:mt-0 py-4 px-10 bg-red-600 rounded-full font-black hover:bg-red-700 transition">상세 경로 확인</button>
+            </div>
+        </section>
+
+        <section id="dt-process" class="py-32 bg-white px-4">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-24">
+                    <h2 class="text-sm font-black text-cheongdo-red tracking-widest uppercase mb-4">04. Design Thinking</h2>
+                    <h3 class="text-5xl font-black text-gray-900">실전 5단계 혁신 파이프라인</h3>
+                </div>
+                
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div onclick="openStepModal(1)" class="step-card bg-white p-10 rounded-3xl">
+                        <div class="text-red-600 font-black text-xs mb-4">STEP 01. EMPATHIZE</div>
+                        <h4 class="text-2xl font-black mb-4">가치 발굴</h4>
+                        <p class="text-gray-500 text-sm mb-6 leading-relaxed">주민과 Z세대 방문객의 숨겨진 욕구를 현장 관찰로 파악</p>
+                        <span class="text-red-600 font-bold">자세히 보기 +</span>
+                    </div>
+                    <div onclick="openStepModal(2)" class="step-card bg-white p-10 rounded-3xl">
+                        <div class="text-red-600 font-black text-xs mb-4">STEP 02. PROTOTYPE</div>
+                        <h4 class="text-2xl font-black mb-4">빠른 실행</h4>
+                        <p class="text-gray-500 text-sm mb-6 leading-relaxed">최소 비용으로 시제품을 만들어 디지털 시장 반응 테스트</p>
+                        <span class="text-red-600 font-bold">자세히 보기 +</span>
+                    </div>
+                    <div onclick="openStepModal(3)" class="step-card bg-white p-10 rounded-3xl">
+                        <div class="text-red-600 font-black text-xs mb-4">STEP 03. ANALYTICS</div>
+                        <h4 class="text-2xl font-black mb-4">데이터 분석</h4>
+                        <p class="text-gray-500 text-sm mb-6 leading-relaxed">AARRR 퍼널을 통해 이탈 구간을 숫자로 명확히 진단</p>
+                        <span class="text-red-600 font-bold">자세히 보기 +</span>
+                    </div>
+                    <div onclick="openStepModal(4)" class="step-card bg-white p-10 rounded-3xl border-b-8 border-red-600">
+                        <div class="text-red-600 font-black text-xs mb-4">STEP 04. OPTIMIZE</div>
+                        <h4 class="text-2xl font-black mb-4">UI/UX 최적화</h4>
+                        <p class="text-gray-500 text-sm mb-6 leading-relaxed">데이터 기반으로 카피와 이미지를 지속 수정하여 매출 증대</p>
+                        <span class="text-red-600 font-bold">자세히 보기 +</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-gray-900 text-gray-500 py-20 text-center text-sm font-medium">
+            <p class="mb-4">본 보고서는 경상북도 청도군의 도시 브랜딩 및 지역 혁신 사례를 분석한 결과물입니다.</p>
+            <p class="tracking-widest uppercase">© 2026 CHEONGDO LOCAL INNOVATION TEAM. ALL RIGHTS RESERVED.</p>
+        </footer>
+    </div>
+
+    <div id="article-view" class="hidden pt-28 pb-32 bg-white min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row gap-16">
+            <main class="lg:w-3/4">
+                <button onclick="goHome()" class="inline-flex items-center bg-gray-100 px-8 py-3 rounded-xl font-black text-gray-600 hover:text-red-600 transition mb-12">
+                    &larr; 메인으로 돌아가기
+                </button>
+                <div id="article-content" class="article-content fade-in"></div>
+            </main>
+            <aside class="lg:w-1/4">
+                <div class="sticky top-28 bg-gray-50 p-8 rounded-[2rem] border border-gray-100">
+                    <h4 class="font-black text-xl mb-8 border-b pb-4">실전 프로젝트 리포트</h4>
+                    <ul class="space-y-4" id="sidebar-menu">
+                        <li><button onclick="openArticle('status')" id="nav-status" class="sidebar-link w-full text-left px-5 py-4 rounded-2xl transition">1. 생활 인구 패러다임 분석</button></li>
+                        <li><button onclick="openArticle('branding')" id="nav-branding" class="sidebar-link w-full text-left px-5 py-4 rounded-2xl transition">2. 게이츠헤드 성공 벤치마킹</button></li>
+                        <li><button onclick="openArticle('innovation')" id="nav-innovation" class="sidebar-link w-full text-left px-5 py-4 rounded-2xl transition">3. 혁신센터 비즈니스 경로</button></li>
+                        <li><button onclick="openArticle('dt')" id="nav-dt" class="sidebar-link w-full text-left px-5 py-4 rounded-2xl transition">4. 아이랩 공감 워크숍 사례</button></li>
+                        <li><button onclick="openArticle('growth')" id="nav-growth" class="sidebar-link w-full text-left px-5 py-4 rounded-2xl transition">5. 동네 떡집 매출 3배 비결</button></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div id="step-modal" class="fixed inset-0 bg-black/90 hidden items-center justify-center z-50 px-4">
+        <div class="bg-white rounded-[3rem] p-10 md:p-16 max-w-4xl w-full max-h-[85vh] overflow-y-auto relative modal-enter shadow-2xl">
+            <button onclick="closeStepModal()" class="absolute top-8 right-8 text-gray-400 hover:text-red-600 transition p-2 bg-gray-100 rounded-full">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div id="step-modal-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // 보강된 실제 프로젝트 내용 (PDF 기반)
+        const articleData = {
+            'status': {
+                tag: "현황 분석",
+                title: "산술적 인구 정책의 폐기와 '생활 인구' 패러다임의 승리",
+                image: "https://images.unsplash.com/photo-1523592121529-f6dde35f079e?auto=format&fit=crop&w=1200&q=80",
+                content: `
+                    <p>청도군의 인구는 약 4만여 명이지만, 실제 청도와 관계를 맺고 체류하는 '생활 인구'는 무려 34만 명에 달합니다. 이는 주민등록 인구의 7.8배에 달하는 수치로, 전국 7위를 기록했습니다.</p>
+                    
+                    <h3>왜 생활 인구인가?</h3>
+                    <p>정주 인구를 늘리려는 과거의 방식은 이미 한계에 직면했습니다. 우리는 정기적으로 방문하거나 다양한 방식으로 지역과 지속적인 관계를 맺는 **'관계 인구(Relationship Population)'** 창출을 핵심 과제로 삼았습니다.</p>
+                    
+                    <blockquote>"2022년부터 2025년까지 확보한 총 472억 원의 지방소멸대응기금은 단순 복지가 아니라, 로컬 비즈니스 생태계를 위한 강력한 동력으로 작용하고 있습니다."</blockquote>
+                    
+                    <h3>정책적 함의</h3>
+                    <p>이 거대한 생활 인구 풀은 지역 소상공인들에게는 거대한 '초기 활성 사용자' 기반이 됩니다. 이들이 오프라인 매장을 거쳐 온라인 스토어로 유입될 때 비로소 진정한 그로스 마케팅이 시작될 수 있습니다.</p>
+                `
+            },
+            'branding': {
+                tag: "도시 브랜딩",
+                title: "영국 게이츠헤드에서 배운 융복합 브랜딩 전략",
+                image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
+                content: `
+                    <p>도시 브랜딩은 로고 하나 만드는 것으로 끝나지 않습니다. 영국의 **게이츠헤드(Gateshead)**가 제분소를 미술관으로 개조하고 '윙크하는 다리'를 만들어 세계적인 관광지로 부상했듯, 청도군 역시 하드웨어 인프라와 소프트웨어 브랜딩을 결합하고 있습니다.</p>
+                    
+                    <h3>맛도 쉼도 청도: 시각적 정체성</h3>
+                    <p>우리는 청도읍성의 성벽을 모티브로 독자적인 서체를 개발하고, 주 색상으로 **'붉은색'**을 채택했습니다. 이는 청도반시의 감꽃과 다이내믹한 힐링 도시의 열정을 상징합니다.</p>
+                    
+                    <h3>대규모 인프라와의 융합</h3>
+                    <ul>
+                        <li><strong>청도자연드림파크:</strong> 3,500억 규모 투자로 700여 개의 일자리를 창출합니다.</li>
+                        <li><strong>청려도원:</strong> 409억 규모 복합 주거 단지로 청년 유입의 거점을 마련합니다.</li>
+                    </ul>
+                    <p>훌륭한 브랜딩이 물리적 공간과 만날 때 비로소 방문객은 그 가치를 체화하게 됩니다.</p>
+                `
+            },
+            'innovation': {
+                tag: "혁신 거점",
+                title: "우장한 센터장이 그리는 로컬 임팩트 비즈니스 생태계",
+                image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80",
+                content: `
+                    <p>청도혁신센터는 "지역발전은 주민의 힘으로"라는 확고한 철학을 바탕으로 움직입니다. 로컬 기업들이 단순 생존을 넘어 성장할 수 있도록 세 가지 핵심 경로를 제시했습니다.</p>
+                    
+                    <h3>비즈니스 맵핑 3대 경로</h3>
+                    <p>1. **비영리 스타트업:** 사회적 가치 창출과 문제 해결에 집중하는 모델.<br>
+                       2. **사회적 경제 기업:** 마을기업과 협동조합을 통한 자본 선순환 모델.<br>
+                       3. **소셜 벤처:** 벤처 자본 유치를 통한 혁신 스케일업 모델.</p>
+                    
+                    <h3>마을호텔과 청년마을: 정체성과 수익성의 균형</h3>
+                    <p>우리는 주민이 직접 운영하며 수익을 분배하는 **'마을호텔'** 모델을 통해 마을 자체를 하나의 비즈니스로 승화시키고 있습니다. 이는 청년들이 자발적으로 찾아올 만한 매력적인 환경을 조성하는 강력한 메커니즘이 됩니다.</p>
+                `
+            },
+            'dt': {
+                tag: "디자인 씽킹",
+                title: "Z세대와 지역 주민의 관점 차이가 혁신의 시작",
+                image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1200&q=80",
+                content: `
+                    <p>디자인 씽킹의 핵심은 '공감'을 통해 진짜 문제를 정의하는 것입니다. 우리는 행안부 프로젝트 데이터를 통해 놀라운 사실을 발견했습니다.</p>
+                    
+                    <h3>세대 간 문제 인식의 극명한 차이</h3>
+                    <p>지역 주민들은 일상적인 **'사회·안전'** 문제를 최우선으로 생각했지만, 외부 관찰자인 **Z세대**는 **'도시재생과 교통 인프라'**를 지역 발전의 심각한 저해 요인으로 포착했습니다.</p>
+                    
+                    <h3>링케치 아이랩(iLab) 워크숍</h3>
+                    <p>단순한 기술 교육이 아닌 소비자 마음을 읽는 '소프트 스킬' 교육을 진행했습니다. 창업가 스스로가 고객 공감 능력을 극대화하여 시장 변화를 빠르게 감지하는 '마켓센싱' 능력을 배양하는 것이 목표입니다.</p>
+                `
+            },
+            'growth': {
+                tag: "성공 사례",
+                title: "동네 떡집이 온라인 맛집으로: 그로스 해킹의 위력",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+                content: `
+                    <p>청도의 수많은 농업 소상공인들이 벤치마킹해야 할 실제 사례입니다. 스마트폰으로 대충 찍은 사진을 올리던 동네 떡집 사장님이 그로스 디자인을 만난 뒤 일어난 변화입니다.</p>
+                    
+                    <h3>AARRR 퍼널 개선의 실제</h3>
+                    <p>유입(Acquisition)은 되었지만, 구매로 이어지지 않는 '활성화(Activation)' 단계의 병목 현상을 진단했습니다. 무미건조한 텍스트 대신 **떡의 쫄깃한 질감을 생생하게 보여주는 GIF 이미지(움짤)**를 상세페이지에 배치했습니다.</p>
+                    
+                    <blockquote>"시각적 신뢰도와 상품의 매력을 극대화하자 전환율 데이터가 폭발적으로 상승했습니다. 결과적으로 온라인 매출이 단기간에 3배 이상 급증했습니다."</blockquote>
+                    
+                    <p>차가운 데이터(엑셀 지표 추적)와 따뜻한 공감(시각적 스토리텔링)의 융합이 만들어낸 완벽한 성과입니다.</p>
+                `
+            }
+        };
+
+        const stepData = {
+            1: {
+                title: "STEP 01. 가치 발굴과 공감 (Theory)",
+                content: "주민 및 Z세대와 깊이 있게 대화하며 그들이 진짜로 원하는 '공간과 문화'에 대해 공감합니다.",
+                exampleTitle: "적용 예시: 청년층 페인 포인트 발견",
+                exampleContent: `<div class="flex items-stretch gap-4 text-sm mt-3"><div class="bg-red-50 p-5 rounded-xl flex-1 border border-red-100">🔎 관찰: 빈집 문제와 일자리 부족</div><div class="bg-red-50 p-5 rounded-xl flex-1 border border-red-100">💡 인사이트: 청년층은 휴식과 협업이 공존하는 공간을 갈망함</div></div>`
+            },
+            2: {
+                title: "STEP 02. 프로토타이핑 (Bridge)",
+                content: "회의실을 벗어나 가상의 랜딩 페이지나 시제품을 빠르게 만들어 시장에 던져봅니다.",
+                exampleTitle: "적용 예시: 특산물 상세페이지 테스트",
+                exampleContent: `<div class="mt-3 flex items-center gap-2 text-xs font-bold text-gray-500"><div class="flex-1 bg-gray-50 p-3 rounded-lg">가설 수립</div>➔<div class="flex-1 bg-gray-50 p-3 rounded-lg">SNS 광고 집행</div>➔<div class="flex-1 bg-red-600 text-white p-3 rounded-lg">실제 사전 예약수 측정</div></div>`
+            },
+            3: {
+                title: "STEP 03. 데이터 분석 (Practice)",
+                content: "엑셀 지표를 통해 어느 단계에서 고객이 이탈하는지 데이터로 수술적 진단을 내립니다.",
+                exampleTitle: "적용 예시: AARRR 엑셀 기록",
+                exampleContent: `<div class="mt-3 rounded-xl border overflow-hidden"><table class="w-full text-xs text-center"><thead class="bg-gray-50 font-bold"><tr><th class="p-3">퍼널</th><th class="p-3">지표</th><th class="p-3">진단</th></tr></thead><tbody><tr class="text-red-600 font-bold"><td class="p-3">활성화</td><td class="p-3">3.2초 체류</td><td class="p-3">상세페이지 즉시 이탈 🚨</td></tr></tbody></table></div>`
+            },
+            4: {
+                title: "STEP 04. UI/UX 최적화 (Convergence)",
+                content: "데이터가 가리키는 병목 구간을 시각적 스토리텔링과 디자인 개선으로 해결합니다.",
+                exampleTitle: "적용 예시: 떡집 매출 폭증의 비결",
+                exampleContent: `<div class="flex gap-4 mt-3 text-xs"><div class="flex-1 p-3 bg-gray-100 rounded-xl line-through">무미건조한 텍스트 설명</div><div class="flex-1 p-3 bg-red-50 border-2 border-red-200 rounded-xl font-bold">쫄깃함이 느껴지는 GIF 움짤 배치</div></div>`
+            }
+        };
+
+        function openArticle(key) {
+            const data = articleData[key];
+            document.getElementById('article-content').innerHTML = `
+                <div class="mb-8">
+                    <span class="text-red-600 font-black tracking-widest text-sm uppercase px-4 py-2 bg-red-50 rounded-full border border-red-100">${data.tag}</span>
+                    <h1 class="text-4xl md:text-6xl font-black mt-6 text-gray-900 leading-tight">${data.title}</h1>
+                </div>
+                <img src="${data.image}" class="w-full h-[400px] md:h-[550px] object-cover rounded-[3rem] shadow-2xl mb-12 border border-gray-100">
+                ${data.content}
+            `;
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            document.getElementById('nav-' + key)?.classList.add('active');
+            document.getElementById('home-view').classList.add('hidden');
+            document.getElementById('article-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goHome() {
+            document.getElementById('article-view').classList.add('hidden');
+            document.getElementById('home-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function openStepModal(idx) {
+            const data = stepData[idx];
+            document.getElementById('step-modal-content').innerHTML = `
+                <div class="flex items-center mb-8"><div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center font-black text-2xl mr-6 shrink-0">${idx}</div>
+                <h2 class="text-3xl font-black text-gray-900">${data.title}</h2></div>
+                <p class="text-xl text-gray-700 leading-relaxed bg-gray-50 p-8 rounded-3xl border border-gray-200 mb-8">${data.content}</p>
+                <div class="bg-white border-4 border-red-50 rounded-[2rem] p-10 shadow-sm">
+                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-3 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        ${data.exampleTitle}
+                    </h3>
+                    ${data.exampleContent}
+                </div>
+            `;
+            const modal = document.getElementById('step-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => modal.querySelector('.modal-enter').classList.add('modal-enter-active'), 10);
+        }
+
+        function closeStepModal() {
+            const modal = document.getElementById('step-modal');
+            modal.querySelector('.modal-enter').classList.remove('modal-enter-active');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+    </script>
+</body>
+</html>
